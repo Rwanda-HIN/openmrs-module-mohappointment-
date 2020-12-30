@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="org.openmrs.module.mohappointment.model">
+    <class name="AppointmentServiceDefinition" table="appointment_service">
+       <id name="appointmentServiceId" type="int" column="appointment_service_id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+	    <property name="name"  column="name" />
+        <property name="description" column="description"/>
+        <property name="startTime" column="start_time"/>
+        <property name="endTime" column="end_time"/>
+        <property name="maxAppointmentsLimit"  column="max_appointments_limit"/>
+                       
+		<property name="createdDate" column="created_date" />
+		<property name="voided" column="voided" type="boolean"/>
+		<property name="voidedDate" column="voided_date" />
+		<property name="changedDate" column="date_changed" />
+		<property name="voidReason" column="void_reason" type="text"/> 
+
+		<many-to-one name="specialty" class="org.openmrs.module.mohappointment.model.Speciality" column="speciality_id" />    
+        <many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by"/>
+		<many-to-one name="creator" class="org.openmrs.User" column="creator" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<many-to-one name="location" class="org.openmrs.Location" column="location_id"/>
+			<!--  
+		
+		<set name="weeklyAvailabilities" lazy="false" inverse="true"  cascade="all-delete-orphan" sort="natural"  order-by="created_date asc">
+			<key column="service_id" />
+			<one-to-many class="org.openmrs.module.mohappointment.model.ServiceWeeklyAvailability"/>
+		</set>  
+	
+		<set name="serviceTypes" lazy="false" inverse="true"  cascade="all-delete-orphan" sort="natural"  order-by="created_date asc">
+			<key column="service_id" />
+			<one-to-many class="org.openmrs.module.mohappointment.model.AppointmentServiceType"/>
+		</set>    
+ 		 -->
+    </class>
+</hibernate-mapping>

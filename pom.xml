@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>mohappointment</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Appointment Management</name>
 	<description>Parent project for Appointment Management</description>
@@ -43,6 +43,7 @@
 
 	<properties>
 		<openMRSVersion>1.9.11</openMRSVersion>
+		<mohappointmentVersion>0.4</mohappointmentVersion>
 	</properties>
 
 	<build>

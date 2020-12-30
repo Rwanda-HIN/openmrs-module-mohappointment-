@@ -20,7 +20,8 @@
 		<description>
 			
 		</description>
-		<sql>		
+		<sql>	
+		<!-- 
 			CREATE TABLE IF NOT EXISTS `moh_appointment_service` (
 			`service_id` int(11) NOT NULL AUTO_INCREMENT,
 			`name` VARCHAR(25) default NULL,
@@ -116,7 +117,7 @@
 			CONSTRAINT `changed_appointment_appointment` FOREIGN KEY (`appointment_id`) REFERENCES `moh_appointment` (`appointment_id`)
 			
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-			
+			 -->
 		</sql>
 	</diff>
 	

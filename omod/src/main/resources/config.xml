@@ -103,13 +103,17 @@
 	</messages>
 
 	<!-- /Internationalization -->
-
 	<mappingFiles>
-		Appointment.hbm.xml
-		AppointmentState.hbm.xml
-		ChangedAppointment.hbm.xml
-		ServiceProviders.hbm.xml
-		Services.hbm.xml
+		Speciality.hbm.xml
+		AppointmentServiceDefinition.hbm.xml
+		ServiceWeeklyAvailability.hbm.xml
+		AppointmentServiceType.hbm.xml	
+		MedServiceProvider.hbm.xml	
+		ProviderSchedule.hbm.xml
+		TimeSlot.hbm.xml
+		PatientAppointment.hbm.xml
+		AppointmentStatus.hbm.xml
+			
 	</mappingFiles>
 
 </module>

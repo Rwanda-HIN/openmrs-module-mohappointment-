@@ -13,23 +13,25 @@
  */
 package org.openmrs.module.mohappointment.db;
 
-import java.text.ParseException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
-import org.openmrs.module.mohappointment.model.Appointment;
-import org.openmrs.module.mohappointment.model.AppointmentState;
-import org.openmrs.module.mohappointment.model.ServiceProviders;
-import org.openmrs.module.mohappointment.model.Services;
+import org.openmrs.module.mohappointment.model.AppointmentServiceDefinition;
+import org.openmrs.module.mohappointment.model.AppointmentServiceType;
+import org.openmrs.module.mohappointment.model.AppointmentStatus;
+import org.openmrs.module.mohappointment.model.MedServiceProvider;
+import org.openmrs.module.mohappointment.model.PatientAppointment;
+import org.openmrs.module.mohappointment.model.ProviderSchedule;
+import org.openmrs.module.mohappointment.model.ServiceWeeklyAvailability;
+import org.openmrs.module.mohappointment.model.Speciality;
+import org.openmrs.module.mohappointment.model.TimeSlot;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author Kamonyo
+ * @author Faustin
  * 
  *         All services to be used by the Appointment Management module are
  *         defined (contracted) in this class. This is the DB Access layer side.
@@ -37,214 +39,215 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface AppointmentDAO {
 
+
+	public List<Speciality> getAllSpecialities();
+
 	/**
-	 * Gets an appointment by its appointmentId
-	 * 
-	 * @param appointmentId
-	 *            , the appointment to be matched
-	 * @return appointment matching the id
+	 * Gets specialty matching with specialtyId
+	 * @param specialtyId
+	 * @return specialty
 	 */
-	public Appointment getAppointmentById(int appointmentId);
+	public Speciality getSpecialty(int specialtyId);
 
 	/**
-	 * Gets all existing appointments.
-	 * 
-	 * @return list of all existing appointments
+	 * saves speciality into DB
+	 * @param specialty
 	 */
-	public Collection<Appointment> getAllAppointments();
+	public void saveSpecialty(Speciality specialty);
 
 	/**
-	 * Saves an appointment in the database.
-	 * 
-	 * @param appointment
-	 *            , the appointment to be saved
+	 * Gets  a list of medical  services
+	 * @return a list of  AppoinmentService
 	 */
-	public void saveAppointment(Appointment appointment);
+	public List<AppointmentServiceDefinition> getAllAppointmentServicesDefinition();
 
 	/**
-	 * Edits an existing appointment.
-	 * 
-	 * @param appointment
-	 *            , the appointment to be updated
+	 * save the  appointmentservicedefinition to be saved
+	 * @param appointmentService to be  saved
+	 * @return the  saved appoinmentServiceDefinition
 	 */
-	public void updateAppointment(Appointment appointment);
+	public AppointmentServiceDefinition saveAppointmentServiceDefinition(
+			AppointmentServiceDefinition appointmentService);
 
 	/**
-	 * Edits an existing appointment.
-	 * 
-	 * @param appointment
-	 *            , the appointment to be updated
-	 * @param stateId
-	 *            , the stateId to be updated
+	 * Gets a list of  med  service providers
+	 * @return a list of med service providers
 	 */
-	public void updateState(Appointment appointment, Integer stateId);
+	public List<MedServiceProvider> getAllMedServiceProviders();
 
 	/**
-	 * Removes a given appointment from the database.
-	 * 
-	 * @param appointment
-	 *            , the appointment to be cancelled
+	 * Gets a list of all  service type
+	 * @return a list of all service type
 	 */
-	public void cancelAppointment(Appointment appointment);
+	public List<AppointmentServiceType> getAllAppoinmentServiceTypes();
 
 	/**
-	 * Gets appointments IDs by entering different conditions of filtering and
-	 * also specifying the limit number to be returned.
-	 * 
-	 * @param conditions
-	 *            , conditions are as follows: [patientId, providerId,
-	 *            locationId, appointmentDate, attended, appointmentDate,
-	 *            appointmentState, reason]
-	 * @return the list of matching appointmentIds
+	 * Gets a list of provider  schedules 
+	 * @return Listof provider  schedules
 	 */
-	public List<Integer> getAppointmentIdsByMulti(Object[] conditions, int limit);
+	public List<ProviderSchedule> providerSchedules();
 
 	/**
-	 * Gets the last entered appointmentId
-	 * 
-	 * @return the matched appointmentId
+	 * Gets AppointmentServiceDefinition  by service ID
+	 * @param serviceId matching with AppointmentServiceDefinition 
+	 * @return AppointmentServiceDefinition
 	 */
-	public Integer lastAppointmentId();
+	public AppointmentServiceDefinition getAppointmentServiceDefinition(Integer serviceId);
 
 	/**
-	 * Loads all existing appointments (not voided)
+	 * Saves weeklyAvailablity into DB
+	 * @param weeklyAvailablity
+	 * @return the  saved weeklyAvailablity
 	 */
-	public void loadAllAppointments();
+	public ServiceWeeklyAvailability saveWeeklyAvailablity(ServiceWeeklyAvailability weeklyAvailablity);
 
 	/**
-	 * Gets the list of all existing appointmentStates
-	 * 
-	 * @return the list of appointmentState
+	 * Gets appointment service Type by service Type Id
+	 * @param serviceTypeId matcghing with the appointment service Type Id 
+	 * @return appointmentService Type
 	 */
-	public Collection<AppointmentState> getAppointmentStates();
+	public AppointmentServiceType getAppointmentServiceType(Integer serviceTypeId);
 
 	/**
-	 * Gets the appointmentState matching the entered name
-	 * 
-	 * @param name
-	 *            the name of the state to be matched
-	 * @return appointmentState the matched appointment state
+	 * saves appointmentServiceType into DB
+	 * @param apptServiceType to be  saved
+	 * @return the  saved apptServiceType
 	 */
-	public AppointmentState getAppointmentStatesByName(String name);
+	public AppointmentServiceType saveAppointmentServiceType(AppointmentServiceType apptServiceType);
 
+	public MedServiceProvider getMedServiceProvider(Integer serviceProviderId);
+
+	public List<ProviderSchedule> getProviderSchedulesByProvider(MedServiceProvider provider);
 	/**
-	 * Saves the entered Services into the DB
-	 * 
-	 * @param service
-	 *            the service to be saved
+	 * Gets a list of Time slots 
+	 * @return a list of Time  slots object
 	 */
-	public void saveService(Services service);
+	public List<TimeSlot> getAllTimeSlots();
 
 	/**
-	 * Updates the entered Services in DB
-	 * 
-	 * @param service
-	 *            the service to be updated
+	 * Saves  and update time slot in database
+	 * @return a saved time slot time into database
 	 */
-	public void updateService(Services service);
+	public TimeSlot saveTimeSlot(TimeSlot timeSlot);
 
 	/**
-	 * Saves the entered ServiceProviders into the DB
-	 * 
-	 * @param service
-	 *            the serviceProvider to be saved
+	 * Gets provider schedule 
+	 * @param providSchedulerId matching with the provider schedule
+	 * @return a searched provider schedule
 	 */
-	public void saveServiceProviders(ServiceProviders serviceProvider);
+	public ProviderSchedule getProviderSchedule(Integer providSchedulerId);
 
 	/**
-	 * Updates the entered ServiceProviders in DB
-	 * 
-	 * @param service
-	 *            the serviceProvider to be updated
+	 * Gets the time slot matching with the given time slot Id
+	 * @param timeSlotId matching with the given time  slot id
+	 * @return Time slot
 	 */
-	public void updateServiceProviders(ServiceProviders serviceProvider);
+	public TimeSlot getTimeSlot(Integer timeSlotId);
 
 	/**
-	 * Gets the Services that matches the entered provider: i.e. the provider is
-	 * working in that service.
-	 * 
-	 * @param provider
-	 *            the provider to be matched in order to get his/her service
-	 * @return the matching service
+	 * Saves provider  schedule 
+	 * @param schedule to be saved
+	 * @return saved schedule 
 	 */
-	public Services getServiceByProvider(Person provider);
+	public ProviderSchedule saveProviderSchedule(ProviderSchedule schedule);
 
 	/**
-	 * Gets the Providers working in the entered service
-	 * 
-	 * @param service
-	 *            the service to be matched in order to get his/her service.
-	 * @return all the matching providerIds <code>personId</code> in that
-	 *         service
+	 * saves appointment
+	 * @param appointment to be  saved
 	 */
-	public Collection<Integer> getPersonsByService(Services service);
+	public void savePatientAppointment(PatientAppointment appointment);
 
 	/**
-	 * Gets the matching Services by entering the <code>serviceId</code>
-	 * 
-	 * @param serviceId
-	 *            the serviceId to be matched in order to get the service
-	 * 
-	 * @return the service matched
+	 * Gets a list of  appointments
+	 * @return a List of  appointments
 	 */
-	public Services getServiceById(Integer serviceId);
+	public List<PatientAppointment> getAllPatientAppointments();
 
 	/**
-	 * Gets all the existing ServiceProviders from the DB: i.e. not voided
-	 * 
-	 * @return the list of all serviceProviders;
-	 */
-	public Collection<ServiceProviders> getServiceProviders();
-
-	/**
-	 * Gets all the existing services in the Hospital or HC
-	 * 
-	 * @return the list of all services
-	 */
-	public Collection<Services> getServices();
-
-	public Collection<Services> getServicesByProvider(Person provider);
-
-	/**
-	 * Gets the matching Services by entering the <code>Concept</code>
-	 * 
-	 * @param concept
-	 *            the Concept to be matched in order to get the service
-	 * 
-	 * @returnthe service matched
-	 */
-	public Services getServiceByConcept(Concept concept);
-
-	/**
-	 * Gets the matching ServiceProviders by entering the
-	 * <code>serviceProviderId</code>
-	 * 
-	 * @param serviceProviderId
-	 *            the serviceProviderId to be matched in order to get the
-	 *            serviceProviders
-	 * 
-	 * @return the serviceProviders matched
-	 */
-	public ServiceProviders getServiceProviderById(int serviceProviderId);
-
-	/**
-	 * Gets the specified Stated (Appointment States) Appointments for the given
-	 * Patient with the
-	 * 
 	 * @param patient
-	 *            the patient to be matched in order to get his/her appointments
-	 * @param state
-	 *            the Appointment State to be matched while returning
-	 *            Appointments
-	 * @param appointmentDate
-	 *            the appointment date to be matched
-	 * @return the Appointments list matched
-	 * @throws ParseException 
+	 * @return a list of appointments
 	 */
-	public Collection<Appointment> getAllWaitingAppointmentsByPatient(
-			Patient patient, AppointmentState state, Date appointmentDate) throws ParseException;
+	public List<PatientAppointment> getAppointmentsByPatient(Patient patient);
 
-	public  void  voidAppointmentByObs(Obs o);
+	public PatientAppointment getBookedAppointmentOnTimeSlotByProviderSchedule(ProviderSchedule providerSchedule,
+			TimeSlot timeSlot);
+
+	public List<ProviderSchedule> getAllProvidersSchedules(MedServiceProvider provider, Date startDate, Date endDate);
+
+	public List<ProviderSchedule> getAllProviderSchedulesByServicesBetweenDates(AppointmentServiceDefinition service,
+			Date startDate, Date endDate);
+
+	public List<ProviderSchedule> getAllProviderSchedulesByService(AppointmentServiceDefinition service,
+			MedServiceProvider provider, Date startingDate, Date endingDate);
+
+	public void saveMedServiceProvider(MedServiceProvider serviceProvider);
+
+	/**
+	 * Gets a list of appointmentserviceDefinitions by provider
+	 * @param provider who is the provider we are looking for serviceDefinitions
+	 * @return a list of  appointemntServiceDefinitions
+	 */
+	public List<AppointmentServiceDefinition> getAllServiceDefinitionsByProvider(Person provider);
+
+	/**
+	 * Gets a ,list of appointments
+	 * @param serviceDefinition which is the service we are looking for  appointments
+	 * @param startDate 
+	 * @param endDate
+	 * @return a list of appointments
+	 */
+	public List<PatientAppointment> getAppointmentsWithinServiceBetweenDates(
+			AppointmentServiceDefinition serviceDefinition, Date startDate, Date endDate);
+
+	/**
+	 * Gets a list of medservice providers
+	 * @param provider
+	 * @return a list of med  service providers
+	 */
+	public List<MedServiceProvider> getMedServiceProvider(Person provider);
+
+	/**
+	 * Gets provider schedule by service provider on selected date
+	 * @param serviceProvider
+	 * @param workingDate
+	 * @return provider schedule
+	 */
+	public ProviderSchedule getProviderScheduleByServiceProvider(MedServiceProvider serviceProvider,
+			Date workingDate);
+
+	/**
+	 * Gets timeSlots 
+	 * @param schedule
+	 * @return
+	 */
+	public List<TimeSlot> getTimeSlotsByProviderSchedule(ProviderSchedule schedule);
+
+	public PatientAppointment getPatientAppointmentByTimeSlot(TimeSlot timeSlot);
+
+	public AppointmentStatus getAppointmentStatus(int appointmentStatusId);
+
+	/**Gets a list of  services  by speciality
+	 * @param speciality
+	 * @return a list of  services 
+	 */
+	public List<AppointmentServiceDefinition> getServicesInSpeciality(Speciality speciality);
+
+	/**
+	 * Gets providerSchedule
+	 * @param provider
+	 * @param service
+	 * @param workingDate
+	 * @return providerschedule 
+	 */
+	public ProviderSchedule getProviderScheduleByServiceProvider(MedServiceProvider provider,
+			AppointmentServiceDefinition service, Date workingDate);
+
+	public List<AppointmentStatus> getAllAppointmentStatuses();
+
+
+
+
+
 
 }
 

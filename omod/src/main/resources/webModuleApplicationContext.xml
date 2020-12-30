@@ -4,7 +4,6 @@
 <!-- Beans to add to the current Application context definition -->
 
 <beans>
-
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
@@ -51,70 +50,103 @@
         <property name="mappings">
             <props>
                 <prop key="**/appointment.portlet">appointmentPortletController</prop>
-                <prop key="module/mohappointment/patientSummary.form">appointmentPatientSummaryFormController</prop>
-                <prop key="module/mohappointment/advancedSearch.form">searchAppointmentFormController</prop>
+                        
+              
                 <prop key="module/mohappointment/providerDashboard.form">providerAppointmentDashboardFormController</prop>
-                <prop key="module/mohappointment/serviceProvider.list">serviceProviderListController</prop>
-                <prop key="module/mohappointment/editServiceProvider.form">appointmentEditServiceProviderController</prop>
-                <prop key="module/mohappointment/editService.form">appointmentEditServiceController</prop>
-                <prop key="module/mohappointment/serviceProvider.form">serviceProviderFormController</prop>
-                <prop key="module/mohappointment/service.list">serviceListController</prop>
-                <prop key="module/mohappointment/service.form">serviceFormController</prop>
-                <prop key="module/mohappointment/findAppointment.form">findAppointmentFormController</prop>
-                <prop key="module/mohappointment/addAppointment.form">addAppointmentFormController</prop>
-            </props>
+               
+                <prop key="module/mohappointment/specialities.list">appointmentSpecialitiesController</prop>
+                <prop key="module/mohappointment/speciality.form">appointmentSpecialtyFormController</prop>
+                <prop key="module/mohappointment/medservices.list">appointmentMedServiceListController</prop>
+                <prop key="module/mohappointment/medservices.form">appointmentMedServiceFormController</prop>
+                <prop key="module/mohappointment/medServiceProvider.list">appointmentMedServiceProvidersListController</prop>
+                <prop key="module/mohappointment/appointmentTypes.list">appointmentServiceTypeController</prop>
+                <prop key="module/mohappointment/providerSchedules.list">appoinmentProviderScheduleListController</prop>
+                <prop key="module/mohappointment/home.htm">appointmentHomePageController</prop>
+                <prop key="module/mohappointment/serviceType.form">appointmentServiceTypeFormController</prop>               
+                <prop key="module/mohappointment/searchProviderSchedule.form">appointmentSearchProviderSchedulesController</prop>
+                <prop key="module/mohappointment/searchAppointment.form">appointmentSearchAppointmentController</prop>
+                <prop key="module/mohappointment/providerAppointments.list">appointmentsByProviderController</prop>
+                <prop key="module/mohappointment/appointment.form">appointmentFormController</prop>
+                <prop key="module/mohappointment/medServiceProvider.form">appointmentMedServiceProviderFormController</prop>
+                <prop key="module/mohappointment/providerScheduling.form">appointmentProviderSchedulingFormController</prop> 
+                <prop key="module/mohappointment/appointments.list">appointmentsListController</prop> 
+                <prop key="module/mohappointment/appointmentNew.form">appointmentNewFormController</prop> 
+                <prop key="module/mohappointment/appointmentReport.form">appointmentReportController</prop> 
+                      
+             </props>
         </property>
     </bean>
 
     <!-- Controllers -->
 
     <bean id="appointmentPortletController" class="org.openmrs.module.mohappointment.web.controller.AppointmentDashboardPortletController" />
-
-    <bean id="findAppointmentFormController" class="org.openmrs.module.mohappointment.web.controller.FindAppointmentController">
-        <property name="viewName"><value>/module/mohappointment/findAppointment</value></property>
-    </bean>
-
-    <bean id="serviceFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentServiceFormController">
-        <property name="viewName"><value>/module/mohappointment/serviceForm</value></property>
-    </bean>
-
-    <bean id="serviceListController" class="org.openmrs.module.mohappointment.web.controller.AppointmentServiceListController">
-        <property name="viewName"><value>/module/mohappointment/serviceList</value></property>
-    </bean>
-
-    <bean id="serviceProviderFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentServiceProviderFormController">
-        <property name="viewName"><value>/module/mohappointment/serviceProviderForm</value></property>
-    </bean>
-
-    <bean id="serviceProviderListController" class="org.openmrs.module.mohappointment.web.controller.AppointmentServiceProviderListController">
-        <property name="viewName"><value>/module/mohappointment/serviceProviderList</value></property>
-    </bean>
-
-    <bean id="appointmentEditServiceProviderController" class="org.openmrs.module.mohappointment.web.controller.AppointmentEditServiceProviderController">
-        <property name="viewName"><value>/module/mohappointment/editProviderService</value></property>
-    </bean>
-
-    <bean id="appointmentEditServiceController" class="org.openmrs.module.mohappointment.web.controller.AppointmentEditServiceController">
-        <property name="viewName"><value>/module/mohappointment/editService</value></property>
-    </bean>
-
-    <bean id="appointmentPatientSummaryFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentPatientSummaryFormController">
-        <property name="viewName"><value>/module/mohappointment/patientSummary</value></property>
-    </bean>
-
-    <bean id="searchAppointmentFormController" class="org.openmrs.module.mohappointment.web.controller.SearchAppointmentFormController">
-        <property name="viewName"><value>/module/mohappointment/searchAppointment</value></property>
-    </bean>
-
+  
     <bean id="providerAppointmentDashboardFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentDashboardByProviderFormController">
         <property name="viewName"><value>/module/mohappointment/providerAppointmentDashboardForm</value></property>
     </bean>
-
-    <bean id="addAppointmentFormController" class="org.openmrs.module.mohappointment.web.controller.AddAppointmentFormController">
-        <property name="viewName"><value>/module/mohappointment/mohappointmentForm</value></property>
+    
+    <bean id="appointmentSpecialitiesController" class="org.openmrs.module.mohappointment.web.controller.AppointmentSpecialitiesController">
+        <property name="viewName"><value>/module/mohappointment/specialitiesList</value></property>
     </bean>
-
-    <!-- /Controllers -->
+    <bean id="appointmentSpecialtyFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentSpecialtyFormController">
+        <property name="viewName"><value>/module/mohappointment/specialtyForm</value></property>
+    </bean>
+     <bean id="appointmentMedServiceListController" class="org.openmrs.module.mohappointment.web.controller.AppointmentMedServiceListController">
+        <property name="viewName"><value>/module/mohappointment/serviceDefinitionList</value></property>
+    </bean>
+    <bean id="appointmentMedServiceFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentMedServiceFormController">
+        <property name="viewName"><value>/module/mohappointment/medServiceForm</value></property>
+    </bean>
+    <bean id="appointmentMedServiceProvidersListController" class="org.openmrs.module.mohappointment.web.controller.AppointmentMedServiceProvidersListController">
+        <property name="viewName"><value>/module/mohappointment/medServiceProvidersList</value></property>
+    </bean>
+     <bean id="appointmentServiceTypeController" class="org.openmrs.module.mohappointment.web.controller.AppointmentServiceTypeController">
+        <property name="viewName"><value>/module/mohappointment/appoinmentServiceTypeList</value></property>
+    </bean>
+     <bean id="appoinmentProviderScheduleListController" class="org.openmrs.module.mohappointment.web.controller.AppoinmentProviderScheduleListController">
+        <property name="viewName"><value>/module/mohappointment/ProviderScheduleList</value></property>
+    </bean>
+      <bean id="appointmentHomePageController" class="org.openmrs.module.mohappointment.web.controller.AppointmentHomePageController">
+        <property name="viewName"><value>/module/mohappointment/appointmentHome</value></property>
+    </bean> 
+      <bean id="appointmentServiceTypeFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentServiceTypeFormController">
+        <property name="viewName"><value>/module/mohappointment/appointmentServiceTypeForm</value></property>
+    </bean> 
+     <bean id="appointmentSearchProviderSchedulesController" class="org.openmrs.module.mohappointment.web.controller.AppointmentSearchProviderSchedulesController">
+        <property name="viewName"><value>/module/mohappointment/searchProviderSchedule</value></property>
+    </bean> 
+     <bean id="appointmentSearchAppointmentController" class="org.openmrs.module.mohappointment.web.controller.AppointmentSearchAppointmentController">
+        <property name="viewName"><value>/module/mohappointment/searchPatientAppointment</value></property>
+    </bean> 
+     <bean id="appointmentsByProviderController" class="org.openmrs.module.mohappointment.web.controller.AppointmentsByProviderController">
+        <property name="viewName"><value>/module/mohappointment/bookedAppointment</value></property>
+    </bean>    
+     <bean id="appointmentFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentFormController">
+        <property name="viewName"><value>/module/mohappointment/appointmentForm</value></property>
+    </bean>
+     <bean id="appointmentMedServiceProviderFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentMedServiceProviderFormController">
+        <property name="viewName"><value>/module/mohappointment/medServiceProviderForm</value></property>
+    </bean>      
+    <bean id="appointmentProviderSchedulingFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentProviderSchedulingFormController">
+        <property name="viewName"><value>/module/mohappointment/providerSchedulingForm</value></property>
+    </bean>
+     <bean id="appointmentsListController" class="org.openmrs.module.mohappointment.web.controller.AppointmentsListController">
+        <property name="viewName"><value>/module/mohappointment/appointmentsList</value></property>
+    </bean> 
+    
+     <bean id="appointmentNewFormController" class="org.openmrs.module.mohappointment.web.controller.AppointmentNewFormController">
+        <property name="viewName"><value>/module/mohappointment/appointmentNewForm</value></property>
+    </bean>
+     <bean id="appointmentReportController" class="org.openmrs.module.mohappointment.web.controller.AppointmentReportController">
+        <property name="viewName"><value>/module/mohappointment/appointmentReport</value></property>
+    </bean>
+    
+    
+    
+    
+         
+               
+      <!-- /Controllers -->
 
     <bean class="org.openmrs.module.mohappointment.utils.ContextProvider" />
 </beans>

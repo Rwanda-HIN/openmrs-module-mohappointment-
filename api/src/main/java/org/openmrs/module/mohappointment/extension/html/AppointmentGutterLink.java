@@ -6,7 +6,7 @@ package org.openmrs.module.mohappointment.extension.html;
 import org.openmrs.module.web.extension.LinkExt;
 
 /**
- * @author Kamonyo
+ * @author Faustin
  * 
  */
 public class AppointmentGutterLink extends LinkExt {

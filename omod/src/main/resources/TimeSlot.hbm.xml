@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="org.openmrs.module.mohappointment.model">
+    <class name="TimeSlot" table="appointment_time_slot">
+       <id name="timeSlotId" type="int" column="time_slot_id" unsaved-value="0">
+			<generator class="native"/>
+		</id>
+        <property name="startTime" column="start_time"/>
+        <property name="endTime" column="end_time"/>
+                              
+		<property name="createdDate" column="created_date"/>
+		<property name="voided" 	column="voided" type="boolean"/>
+		<property name="voidedDate" column="voided_date"/>
+		<property name="changedDate" column="date_changed"/>
+		<property name="voidReason" column="void_reason" type="text"/> 
+		
+		<many-to-one name="providerSchedule" class="org.openmrs.module.mohappointment.model.ProviderSchedule" column="schedule_id"/>
+        <many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by"/>
+		<many-to-one name="creator" class="org.openmrs.User" column="creator"/>
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by"/>
+	</class>
+</hibernate-mapping>

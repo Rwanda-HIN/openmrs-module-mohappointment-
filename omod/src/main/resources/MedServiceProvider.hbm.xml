@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.mohappointment.model">
+
+	<!-- appointment_med_service_provider mapping -->
+	
+	<class name="MedServiceProvider" table="appointment_med_service_provider_">
+
+		<id name="medServiceProviderId" type="int" column="med_service_provider_id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		 <property name="name"  column="name"/>
+		 <property name="title"  column="title"/>         
+        
+        <property name="createdDate" column="created_date" />
+		<property name="voided" column="voided" type="boolean"/>
+		<property name="voidedDate" column="voided_date" />
+		<property name="changedDate" column="date_changed" />
+		<property name="voidedReason" column="void_reason" type="text"/>
+		
+		<many-to-one name="provider" class="org.openmrs.Person" column="provider_id" /> 		
+ 		<many-to-one name="serviceDefinition" class="org.openmrs.module.mohappointment.model.AppointmentServiceDefinition" column="service_id" />
+		<many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by"/>
+		<many-to-one name="creator" class="org.openmrs.User" column="creator" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+	
+	</class>
+	
+</hibernate-mapping>

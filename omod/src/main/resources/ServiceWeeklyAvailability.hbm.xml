@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="org.openmrs.module.mohappointment.model">
+    <class name="ServiceWeeklyAvailability" table="appointment_service_weekly_availability">
+       <id name="serviceWeeklyAvailabilityId" type="int" column="service_weekly_availability_id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<property name="dayOfWeek"  column="day_of_week" type="text"/>
+        <property name="startTime"  column="start_time" type="text"/>
+        <property name="endTime"    column="end_time" type="text"/>
+        <property name="maxAppointmentsLimit"  column="max_appointments_limit"/>
+     
+		<property name="createdDate" column="created_date" />
+		<property name="voided" 	column="voided" type="boolean" />
+		<property name="voidedDate" column="voided_date" />
+		<property name="changedDate" column="date_changed" />
+		<property name="voidReason" column="void_reason" type="text" />
+		
+		<many-to-one name="serviceDefinition" class="org.openmrs.module.mohappointment.model.AppointmentServiceDefinition"  column="service_id"/>
+		<many-to-one name="voidedBy" class="org.openmrs.User" column="voided_by" />
+		<many-to-one name="creator" class="org.openmrs.User" column="creator" />
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+	</class>
+</hibernate-mapping>

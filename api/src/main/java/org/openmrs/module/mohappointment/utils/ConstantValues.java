@@ -4,8 +4,7 @@
 package org.openmrs.module.mohappointment.utils;
 
 /**
- * @author Kamonyo
- * 
+ * @author Faustin 
  */
 public class ConstantValues {
 	//
@@ -42,10 +41,7 @@ public class ConstantValues {
 	public static final String GLOBAL_PROPERTY_PRIMARY_IDENTIFIER_TYPE = "registration.primaryIdentifierType";
 	public static final String GLOBAL_PROPERTY_OTHER_IDENTIFIER_TYPES = "registration.otherIdentifierTypes";
 	public static final String GLOBAL_PROPERTY_BAR_CODE_COUNT = "registration.barCodeCount";
-	// TODO: the location code architecture is wrong -- all location codes come
-	// from module
-	// TODO: this needs to correspond to a single default location
-	// TODO: registration clerk can override this in module.
+	
 	public static final String GLOBAL_PROPERTY_RWANDA_LOCATION_CODE = "registration.rwandaLocationCodes";
 	public static final String GLOBAL_PROPERTY_DEFAULT_LOCATION_CODE = "registration.defaultLocationCode";
 	public static final String GLOBAL_PROPERTY_INSURANCE_TYPE = "registration.insuranceTypeConcept";

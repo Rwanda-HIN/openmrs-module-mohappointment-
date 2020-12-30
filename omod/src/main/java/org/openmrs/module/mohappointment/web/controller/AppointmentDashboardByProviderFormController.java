@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.mohappointment.web.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,8 +23,10 @@ import javax.servlet.http.HttpServletResponse;
  import org.apache.commons.logging.LogFactory;*/
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mohappointment.model.Appointment;
-import org.openmrs.module.mohappointment.model.Services;
+import org.openmrs.module.mohappointment.model.AppointmentServiceDefinition;
+import org.openmrs.module.mohappointment.model.MedServiceProvider;
+import org.openmrs.module.mohappointment.model.PatientAppointment;
+import org.openmrs.module.mohappointment.model.ProviderSchedule;
 import org.openmrs.module.mohappointment.service.AppointmentService;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.util.OpenmrsConstants;
@@ -33,37 +34,72 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 /**
- * @author Yves GAKUBA
+ * @author Faustin
  * 
  */
-public class AppointmentDashboardByProviderFormController extends
-		ParameterizableViewController {
+public class AppointmentDashboardByProviderFormController extends ParameterizableViewController {
 
 	// private Log log = LogFactory.getLog(this.getClass());
 
 	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
 		ModelAndView mav = new ModelAndView();
+		AppointmentService apptService = Context.getService(AppointmentService.class);
 		User authUser = Context.getAuthenticatedUser();
-		String defaultLoc = authUser.getUserProperties().get(
-				OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
+
+		// Check if the Provider is associated to the services and display associated
+		// appointments but for today(current time)
+
+		if (request.getParameter("serviceDefinitionId") != null && !request.getParameter("serviceDefinitionId").equals("")) {
+			
+			Integer  serviceDefinitionId =Integer.valueOf(request.getParameter("serviceDefinitionId"));
+			AppointmentServiceDefinition  serviceDefinition = apptService.getAppointmentServiceDefinition(serviceDefinitionId);
+			
+			//get the providers associated to the authenticated user
+			
+			List<MedServiceProvider> serviceProviders = apptService.getMedServiceProvider(authUser.getPerson());
+			
+			MedServiceProvider serviceProvider = null;
+			
+			for (MedServiceProvider medServiceProvider : serviceProviders) {
+				
+				if (medServiceProvider.getServiceDefinition().equals(serviceDefinition)) {
+					serviceProvider=medServiceProvider;
+					break;
+				}
+				
+			}
+			//Get provider schedule for authenticated user but TODAY scheduled.
+			Date todayDate = (request.getParameter("todayDate") != null&&  (request.getParameter("todayDate").trim().compareTo("") != 0) ? 
+					(Date) Context.getDateFormat().parse(request.getParameter("todayDate")):null);
+			System.out.println("Today date>>>>>>>>"+todayDate);
+		
+			ProviderSchedule providerSchedule = apptService.getProviderScheduleByServiceProvider(serviceProvider,todayDate);			
+			
+			
+			mav.addObject("providerSchedule", providerSchedule);
+			
+		}		
+	
+		String defaultLoc = authUser.getUserProperties().get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
 
 		mav.setViewName(getViewName());
 
 		mav.addObject("authenticatedUser", authUser);
-		mav.addObject("authenticatedUserLoc", (null != defaultLoc) ? Context
-				.getLocationService().getDefaultLocation() : "-");
-		mav.addObject("todayDate", new Date());
+		mav.addObject("authenticatedUserLoc",(null != defaultLoc) ? Context.getLocationService().getDefaultLocation() : "-");
+		mav.addObject("todayDate", new Date());		
+		
+		List<AppointmentServiceDefinition> servicedefinitions = apptService.getAllServiceDefinitionsByProvider(authUser.getPerson());
 
-		AppointmentService service = Context
-				.getService(AppointmentService.class);
+		mav.addObject("serviceDefinitions", servicedefinitions);
 
 		// filtering the Waiting Appointments
-		filterWaitingAppointments(request, mav, authUser, service);
+		// filterWaitingAppointments(request, mav, authUser, service);
 
 		// getting the Upcoming Appointments
-		getUpcomingAppointments(mav, authUser, service);
+		// getUpcomingAppointments(mav, authUser, service);
 
 		return mav;
 	}
@@ -71,78 +107,28 @@ public class AppointmentDashboardByProviderFormController extends
 	/**
 	 * Gets the Upcoming Appointments for a logged in Provider
 	 * 
-	 * @param mav
-	 *            the Model and View
-	 * @param authUser
-	 *            the Provider
-	 * @param service
-	 *            the AppointmentService
+	 * @param mav      the Model and View
+	 * @param authUser the Provider
+	 * @param service  the AppointmentService
 	 */
-	private void getUpcomingAppointments(ModelAndView mav, User authUser,
-			AppointmentService service) {
-		Object[] conditionsUpcomingAppointment = { null,
-				authUser.getPerson().getPersonId(), null, null, null, null, 3,
-				null };
+	private void getUpcomingAppointments(ModelAndView mav, User authUser, AppointmentService service) {
 
-		List<Integer> upcomingAppointmentIds = service
-				.getAppointmentIdsByMulti(conditionsUpcomingAppointment, 100);
-		List<Appointment> upcomingAppointments = new ArrayList<Appointment>();
-		for (Integer appointmentId : upcomingAppointmentIds) {
-			upcomingAppointments.add(service.getAppointmentById(appointmentId));
-		}
-
-		mav.addObject("upcomingAppointments", AppointmentUtil
-				.convertIntoAppointmentViewList(upcomingAppointments));
 	}
 
 	/**
 	 * Gets and filters the Waiting Appointments for a logged in Provider
 	 * 
-	 * @param request
-	 *            the HttpServletRequest
-	 * @param mav
-	 *            the Model and View
-	 * @param authUser
-	 *            the Provider
-	 * @param service
-	 *            the AppointmentService
+	 * @param request  the HttpServletRequest
+	 * @param mav      the Model and View
+	 * @param authUser the Provider
+	 * @param service  the AppointmentService
 	 */
-	private void filterWaitingAppointments(HttpServletRequest request,
-			ModelAndView mav, User authUser, AppointmentService service) {
+	private void filterWaitingAppointments(HttpServletRequest request, ModelAndView mav, User authUser,
+			AppointmentService service) {
 		String display = "none";
-		// By default at the first display, we don't expect to filter waiting
-		// list!
-		List<Appointment> waitingAppointments = AppointmentUtil
-				.getTodayAppointmentsForProvider(authUser, new Date(),
-						new Date(), null);
+		List<PatientAppointment> waitingAppointment = AppointmentUtil.getTodayAppointmentsForProvider(authUser,
+				new Date(), new Date());
 
-		// Check if the Provider is associated to more than 1 service and
-		// display filter div
-		if (request.getParameter("select_service") != null) {
-			if (request.getParameter("services_by_provider") != null
-					&& !request.getParameter("services_by_provider").equals("")) {
-
-				waitingAppointments = AppointmentUtil
-						.getTodayAppointmentsForProvider(authUser, new Date(),
-								new Date(),
-								service.getServiceById(Integer.parseInt(request
-										.getParameter("services_by_provider"))));
-
-			}
-		}
-
-		List<Services> services = (List<Services>) service
-				.getServicesByProvider(authUser.getPerson());
-
-		if (services.size() > 1 && waitingAppointments.size() > 0) {
-			mav.addObject("services", services);
-			display = "block";
-		}
-
-		mav.addObject("display_filter", display);
-
-		mav.addObject("waitingAppointments", AppointmentUtil
-				.convertIntoAppointmentViewList(waitingAppointments));
 	}
 
 }

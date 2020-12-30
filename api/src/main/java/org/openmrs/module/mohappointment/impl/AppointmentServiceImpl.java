@@ -3,24 +3,25 @@
  */
 package org.openmrs.module.mohappointment.impl;
 
-import java.text.ParseException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.openmrs.Concept;
-import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.module.mohappointment.db.AppointmentDAO;
-import org.openmrs.module.mohappointment.model.Appointment;
-import org.openmrs.module.mohappointment.model.AppointmentState;
-import org.openmrs.module.mohappointment.model.ServiceProviders;
-import org.openmrs.module.mohappointment.model.Services;
+import org.openmrs.module.mohappointment.model.AppointmentServiceDefinition;
+import org.openmrs.module.mohappointment.model.AppointmentServiceType;
+import org.openmrs.module.mohappointment.model.AppointmentStatus;
+import org.openmrs.module.mohappointment.model.MedServiceProvider;
+import org.openmrs.module.mohappointment.model.PatientAppointment;
+import org.openmrs.module.mohappointment.model.ProviderSchedule;
+import org.openmrs.module.mohappointment.model.ServiceWeeklyAvailability;
+import org.openmrs.module.mohappointment.model.Speciality;
+import org.openmrs.module.mohappointment.model.TimeSlot;
 import org.openmrs.module.mohappointment.service.AppointmentService;
 
 /**
- * @author Kamonyo
+ * @author Faustin
  * 
  */
 public class AppointmentServiceImpl implements AppointmentService {
@@ -36,144 +37,282 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
-	public void cancelAppointment(Appointment appointment) {
-
-		appointmentDAO.cancelAppointment(appointment);
-	}
-
-	@Override
-	public Collection<Appointment> getAllAppointments() {
-
-		return appointmentDAO.getAllAppointments();
-	}
-
-	@Override
-	public Appointment getAppointmentById(int appointmentId) {
-
-		return appointmentDAO.getAppointmentById(appointmentId);
-	}
-
-	@Override
-	public List<Integer> getAppointmentIdsByMulti(Object[] conditions, int limit) {
-
-		return appointmentDAO.getAppointmentIdsByMulti(conditions, limit);
-	}
-
-	@Override
-	public Integer lastAppointmentId() {
-
-		return appointmentDAO.lastAppointmentId();
-	}
-
-	@Override
-	public void loadAllAppointments() {
-
-		appointmentDAO.loadAllAppointments();
-	}
-
-	@Override
-	public void saveAppointment(Appointment appointment) {
-
-		appointmentDAO.saveAppointment(appointment);
-	}
-
-	@Override
-	public void updateAppointment(Appointment appointment) {
-
-		appointmentDAO.updateAppointment(appointment);
-	}
-
-	@Override
-	public void updateState(Appointment appointment, Integer stateId) {
-
-		appointmentDAO.updateAppointment(appointment);
-	}
-
-	@Override
-	public Collection<AppointmentState> getAppointmentStates() {
-
-		return appointmentDAO.getAppointmentStates();
-	}
-
-	@Override
-	public AppointmentState getAppointmentStatesByName(String name) {
-
-		return appointmentDAO.getAppointmentStatesByName(name);
-	}
-
-	@Override
-	public void saveService(Services service) {
-		appointmentDAO.saveService(service);
-	}
-
-	@Override
-	public void saveServiceProviders(ServiceProviders serviceProvider) {
-		appointmentDAO.saveServiceProviders(serviceProvider);
-	}
-
-	@Override
-	public void updateService(Services service) {
-		appointmentDAO.updateService(service);
-	}
-
-	@Override
-	public void updateServiceProviders(ServiceProviders serviceProvider) {
-		appointmentDAO.updateServiceProviders(serviceProvider);
-	}
-
-	@Override
-	public Collection<Integer> getPersonsByService(Services service) {
-		return appointmentDAO.getPersonsByService(service);
-	}
-
-	@Override
-	public Services getServiceByProvider(Person provider) {
-		return appointmentDAO.getServiceByProvider(provider);
-	}
-
-	@Override
-	public Services getServiceById(Integer serviceId) {
-		return appointmentDAO.getServiceById(serviceId);
-	}
-
-	@Override
-	public Collection<ServiceProviders> getServiceProviders() {
-		return appointmentDAO.getServiceProviders();
-	}
-
-	@Override
-	public Collection<Services> getServices() {
-		return appointmentDAO.getServices();
-	}
-
-	@Override
-	public Collection<Services> getServicesByProvider(Person provider) {
-		return appointmentDAO.getServicesByProvider(provider);
-	}
-
-	@Override
-	public Services getServiceByConcept(Concept concept) {
-		return appointmentDAO.getServiceByConcept(concept);
-	}
-
-	@Override
-	public ServiceProviders getServiceProviderById(int serviceProviderId) {
-		return appointmentDAO.getServiceProviderById(serviceProviderId);
+	public List<Speciality> getAllSpecialities() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllSpecialities();
 	}
 
 	/**
-	 * @throws ParseException 
-	 * @see AppointmentService#getAllWaitingAppointmentsByPatient(org.openmrs.Patient, AppointmentState)
+	 *gets speciqlty by speciqlity Id
 	 */
 	@Override
-	public Collection<Appointment> getAllWaitingAppointmentsByPatient(
-			Patient patient, AppointmentState state, Date appointmentDate) throws ParseException {
-		return appointmentDAO
-				.getAllWaitingAppointmentsByPatient(patient, state, appointmentDate);
+	public Speciality getSpecialty(int specialtyId) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getSpecialty(specialtyId);
+	}
+
+	/**
+	 *saves the specialty into DB
+	 */
+	@Override
+	public void saveSpecialty(Speciality specialty) {
+		// TODO Auto-generated method stub
+		appointmentDAO.saveSpecialty(specialty);
+		
+	}
+
+	@Override
+	public List<AppointmentServiceDefinition> getAllAppointmentServicesDefinition() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllAppointmentServicesDefinition();
+	}
+
+	@Override
+	public AppointmentServiceDefinition saveAppointmentServiceDefinition(
+			AppointmentServiceDefinition appointmentService) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.saveAppointmentServiceDefinition(appointmentService);
+	}
+
+	@Override
+	public List<MedServiceProvider> getAllMedServiceProviders() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllMedServiceProviders();
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public List<AppointmentServiceType> getAllAppoinmentServiceTypes() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllAppoinmentServiceTypes();
+	}
+
+	@Override
+	public List<ProviderSchedule> getAllProvidersSchedules() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.providerSchedules();
+	}
+
+	@Override
+	public AppointmentServiceDefinition getAppointmentServiceDefinition(Integer serviceId) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAppointmentServiceDefinition(serviceId);
+	}
+
+	/**
+	 *Saves the  weeklyAvailablity 
+	 *return the  saved WeeklyAvailablity
+	 */
+	@Override
+	public ServiceWeeklyAvailability saveWeeklyAvailablity(ServiceWeeklyAvailability weeklyAvailablity) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.saveWeeklyAvailablity(weeklyAvailablity);
+	}
+
+	/**
+	 *Get appointmentserviceType by serviceTypeId
+	 *return the  matched appointmentserviceType
+	 */
+	@Override
+	public AppointmentServiceType getAppointmentServiceType(Integer serviceTypeId) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAppointmentServiceType(serviceTypeId);
+	}
+
+	/**
+	 *saves the appointmentservice Type into DB
+	 *return the saved appointmentService Type
+	 */
+	@Override
+	public AppointmentServiceType saveAppointmentServiceType(AppointmentServiceType apptServiceType) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.saveAppointmentServiceType(apptServiceType);
+	}
+
+	/**
+	 *Gets service provider by service provider ID
+	 */
+	@Override
+	public MedServiceProvider getMedServiceProvider(Integer serviceProviderId) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getMedServiceProvider(serviceProviderId);
+	}
+
+	/**
+	 *Gets a list of provider schedules  by provider
+	 */
+	@Override
+	public List<ProviderSchedule> getProviderSchedulesByProvider(MedServiceProvider provider) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getProviderSchedulesByProvider(provider);
+	}
+
+	@Override
+	public List<TimeSlot> getAllTimeSlots() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllTimeSlots();
+	}
+
+	@Override
+	public TimeSlot saveTimeSlot(TimeSlot timeSlot) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.saveTimeSlot(timeSlot);
+	}
+
+	/**
+	 *Gets provider schedule 
+	 */
+	@Override
+	public ProviderSchedule getProviderSchedule(Integer providSchedulerId) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getProviderSchedule(providSchedulerId);
+	}
+
+	/**
+	 *Gets TimeSlot matching with the given Time slot Id
+	 */
+	@Override
+	public TimeSlot getTimeSlot(Integer timeSlotId) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getTimeSlot(timeSlotId);
+	}
+
+	@Override
+	public ProviderSchedule saveProviderSchedule(ProviderSchedule schedule) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.saveProviderSchedule(schedule);
+	}
+
+	@Override
+	public void savePatientAppointment(PatientAppointment appointment) {
+		appointmentDAO.savePatientAppointment(appointment);
+		
+	}
+
+	@Override
+	public List<PatientAppointment> getAllPatientAppointments() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllPatientAppointments();
+	}
+
+	@Override
+	public List<PatientAppointment> getAppointmentsByPatient(Patient patient) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAppointmentsByPatient(patient);
+	}
+
+	/**
+	 * Gets booked appointment for a given schedule and time slot
+	 * @param providerSchedule
+	 * @param timeSlot
+	 * @return booked patient appointment
+	 */
+	@Override
+	public List<ProviderSchedule> getAllProvidersSchedules(MedServiceProvider provider, Date StartDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllProvidersSchedules(provider,StartDate,endDate);
+	}
+
+	@Override
+	public List<ProviderSchedule> getAllProviderSchedulesByServicesBetweenDates(AppointmentServiceDefinition service,
+			Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllProviderSchedulesByServicesBetweenDates(service,startDate,endDate);
 	}
 	@Override
-	public  void  voidAppointmentByObs(Obs o){
-		appointmentDAO.voidAppointmentByObs(o);
+	public List<ProviderSchedule> getAllProviderSchedulesByService(AppointmentServiceDefinition service,
+			MedServiceProvider provider, Date startingDate, Date endingDate) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllProviderSchedulesByService(service,provider,startingDate,endingDate);
+	}
+	@Override
+	public void saveMedServiceProvider(MedServiceProvider serviceProvider) {
+		// TODO Auto-generated method stub
+		appointmentDAO.saveMedServiceProvider(serviceProvider);
+	}
+	/**
+	 *Gets a list of  serviceDefinitions by provider
+	 */
+	@Override
+	public List<AppointmentServiceDefinition> getAllServiceDefinitionsByProvider(Person provider) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllServiceDefinitionsByProvider(provider);
+	}
+
+	/**
+	 *Gets  a list of  appointments  within services  between two selected  dates
+	 */
+	@Override
+	public List<PatientAppointment> getAppointmentsWithinServiceBetweenDates(
+			AppointmentServiceDefinition serviceDefinition, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAppointmentsWithinServiceBetweenDates(serviceDefinition,startDate,endDate);
+	}	
+	/**
+	 *Gets a list of medService Providers per provider
+	 */
+	@Override
+	public List<MedServiceProvider> getMedServiceProvider(Person provider) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getMedServiceProvider(provider);
+	}
+	/**
+	 *Gets provider schedule by service provider on selected dates
+	 */
+	@Override
+	public ProviderSchedule getProviderScheduleByServiceProvider(MedServiceProvider serviceProvider, Date workingDate) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getProviderScheduleByServiceProvider(serviceProvider,workingDate) ;
+	}
+
+	/**
+	 *Gets a list of time slot for schedule
+	 */
+	@Override
+	public List<TimeSlot> getTimeSlotsByProviderSchedule(ProviderSchedule schedule) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getTimeSlotsByProviderSchedule(schedule);
+	}
+	/**
+	 *Gets patient appointment associated with time slot
+	 */
+	@Override
+	public PatientAppointment getPatientAppointmentByTimeSlot(TimeSlot timeSlot) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getPatientAppointmentByTimeSlot(timeSlot);
+	}
+
+	@Override
+	public AppointmentStatus getAppointmentStatus(int appointmentStatusId) {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAppointmentStatus(appointmentStatusId);
+	}
+
+	/**
+	 *Gets a list of  services by speciality
+	 */
+	@Override
+	public List<AppointmentServiceDefinition> getServicesInSpeciality(Speciality speciality) {
+		
+		return appointmentDAO.getServicesInSpeciality(speciality);
+	}
+
+	/**
+	 *Gets provider  schedule
+	 */
+	@Override
+	public ProviderSchedule getProviderScheduleByServiceProvider(MedServiceProvider provider,
+			AppointmentServiceDefinition service, Date workingDate) {
+		
+		return appointmentDAO.getProviderScheduleByServiceProvider(provider,service,workingDate);
+	}
+
+	@Override
+	public List<AppointmentStatus> getAllAppointmentStatuses() {
+		// TODO Auto-generated method stub
+		return appointmentDAO.getAllAppointmentStatuses() ;
 	}
 
 }
